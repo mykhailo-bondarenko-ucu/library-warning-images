@@ -14,4 +14,4 @@ prompt = "A photo of a table tent in a restaurant"
 image = pipe(prompt, num_inference_steps=50, guidance_scale=7.5).images[0]
 
 # from time import time
-image.save(f"prior-tent-restaurant-2.png")
+image.save(f"prior-tent-restaurant-1.png")
