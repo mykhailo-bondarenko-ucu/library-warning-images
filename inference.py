@@ -8,7 +8,7 @@ accelerator = Accelerator()
 
 unet, text_encoder = accelerator.prepare(pipeline.unet, pipeline.text_encoder)
 
-accelerator.load_state("saved_models/try_1")
+accelerator.load_state("saved_models/try_1/checkpoint-500")
 
 pipeline = DiffusionPipeline.from_pretrained(
     model_id,
