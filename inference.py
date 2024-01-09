@@ -1,19 +1,11 @@
-from accelerate import Accelerator
-from diffusers import DiffusionPipeline
+from diffusers import StableDiffusionPipeline
+import torch
 
-model_id = "CompVis/stable-diffusion-v1-4"
-pipeline = DiffusionPipeline.from_pretrained(model_id)
+model_id = "saved_models/try_1"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16).to("cuda")
 
-accelerator = Accelerator()
+prompt = "A photo of sks table tent in a restaurant"
+image = pipe(prompt, num_inference_steps=50, guidance_scale=7.5).images[0]
 
-unet, text_encoder = accelerator.prepare(pipeline.unet, pipeline.text_encoder)
-
-accelerator.load_state("saved_models/try_1/checkpoint-500")
-
-pipeline = DiffusionPipeline.from_pretrained(
-    model_id,
-    unet=accelerator.unwrap_model(unet),
-    text_encoder=accelerator.unwrap_model(text_encoder),
-)
-
-pipeline.save_pretrained("dreambooth-pipeline")
+from time import time
+image.save(f"tent-restaurant-{int(time())}.png")
